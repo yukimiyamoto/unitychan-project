@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SearchErea : MonoBehaviour {
-
+public class PlayerHP : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
 	
 	}
 	
-
+	// Update is called once per frame
+	void Update () {
+	
+	}
 }
