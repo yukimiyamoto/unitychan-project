@@ -13,12 +13,12 @@ public class ZombieController : MonoBehaviour
 	void Start () 
 	{
 		animator = GetComponent<Animator> ();
-		animator.SetTrigger("Walk");
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		animator.SetTrigger("Walk");
 		//ahead
 		zombie.transform.Translate (Vector3.forward * warkspeed * Time.deltaTime);
 	}
@@ -31,14 +31,9 @@ public class ZombieController : MonoBehaviour
 			Quaternion LookAtPlayer=Quaternion.LookRotation(other.transform.position-transform.position);
 			zombie.transform.rotation=Quaternion.Slerp(transform.rotation,LookAtPlayer,rotatespeed*Time.deltaTime);
 
-			if(zombie.transform.position.x-other.gameObject.transform.position.x < 1.0f)
+			if(zombie.transform.position.x-other.gameObject.transform.position.x < 2.0f)
 			{
 				animator.SetTrigger("Attak");
-
-				if(AnimSt.normalizedTime<1.0f)
-				{
-					animator.SetTrigger("Walk");
-				}
 			}
 		}
 	}
