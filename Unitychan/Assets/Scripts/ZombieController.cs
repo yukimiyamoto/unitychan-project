@@ -12,7 +12,7 @@ public class ZombieController : MonoBehaviour
 	void Start () 
 	{
 		animator = GetComponent<Animator> ();
-		animator.SetTrigger("Walk");
+		animator.SetTrigger("walk");
 	}
 	
 	// Update is called once per frame
