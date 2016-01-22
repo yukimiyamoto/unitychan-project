@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AttakErea.cs" />
+     <Compile Include="Assets\Scripts\Damage.cs" />
      <Compile Include="Assets\Scripts\PlayerHP.cs" />
      <Compile Include="Assets\Scripts\ZombieController.cs" />
      <Compile Include="Assets\UnityChan\Scripts\AutoBlink.cs" />
