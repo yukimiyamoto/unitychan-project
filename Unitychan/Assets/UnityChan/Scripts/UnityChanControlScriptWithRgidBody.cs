@@ -32,7 +32,7 @@ namespace UnityChan
 		// ジャンプ威力
 		public float jumpPower = 3.0f;
 		//HP
-		public int playerHP{ get; set;}
+		public int playerHP = 3;
 		// キャラクターコントローラ（カプセルコライダ）の参照
 		private CapsuleCollider col;
 		private Rigidbody rb;
@@ -44,6 +44,7 @@ namespace UnityChan
 		private Animator anim;							// キャラにアタッチされるアニメーターへの参照
 		private AnimatorStateInfo currentBaseState;			// base layerで使われる、アニメーターの現在の状態の参照
 
+		[SerializeField]
 		private GameObject cameraObject;	// メインカメラへの参照
 		
 		// アニメーター各ステートへの参照
@@ -51,6 +52,7 @@ namespace UnityChan
 		static int locoState = Animator.StringToHash ("Base Layer.Locomotion");
 		static int jumpState = Animator.StringToHash ("Base Layer.Jump");
 		static int restState = Animator.StringToHash ("Base Layer.Rest");
+		static int loseState = Animator.StringToHash ("Base Layer.Lose");
 
 		#region Start
 		// 初期化
@@ -66,8 +68,6 @@ namespace UnityChan
 			// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 			orgColHight = col.height;
 			orgVectColCenter = col.center;
-			//init HP
-			playerHP = 3;
 		}
 		#endregion
 
@@ -75,6 +75,12 @@ namespace UnityChan
 		// 以下、メイン処理.リジッドボディと絡めるので、FixedUpdate内で処理を行う.
 		void FixedUpdate ()
 		{
+			if (playerHP <= 0) 
+			{
+				Debug.Log ("aaa");
+				anim.SetBool("Lose",false);
+			}
+
 			float h = Input.GetAxis ("Horizontal");				// 入力デバイスの水平軸をhで定義
 			float v = Input.GetAxis ("Vertical");				// 入力デバイスの垂直軸をvで定義
 			anim.SetFloat ("Speed", v);							// Animator側で設定している"Speed"パラメタにvを渡す

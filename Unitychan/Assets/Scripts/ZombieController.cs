@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ZombieController : MonoBehaviour 
 {
-	public float warkspeed;
+	public int zonbieHP;
 	public float rotatespeed;
 	public GameObject zombie;
 	Animator animator;
@@ -18,9 +18,10 @@ public class ZombieController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		//ahead
-		zombie.transform.Translate (Vector3.forward * warkspeed * Time.deltaTime);
 		animator.SetTrigger("walk");
+
+		if (zonbieHP < 0)
+			Destroy (zombie);
 	}
 
 	void OnTriggerStay(Collider other)

@@ -8,8 +8,11 @@ public class LoiteringErea : MonoBehaviour
 
 	void OnTriggerStay(Collider zombie)
 	{
-		//ahead
-		zombie.transform.Translate (Vector3.forward * warkspeed * Time.deltaTime);
+		if (zombie.gameObject.tag == "zombie") 
+		{
+			//ahead
+			zombie.transform.Translate (Vector3.forward * warkspeed * Time.deltaTime);
+		}
 	}
 
 	void OnTriggerExit(Collider enemy)
