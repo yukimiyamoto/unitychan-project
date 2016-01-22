@@ -7,7 +7,6 @@ public class ZombieController : MonoBehaviour
 	public float rotatespeed;
 	public GameObject zombie;
 	Animator animator;
-	AnimatorStateInfo AnimSt;
 
 	// Use this for initialization
 	void Start () 
@@ -21,6 +20,7 @@ public class ZombieController : MonoBehaviour
 	{
 		//ahead
 		zombie.transform.Translate (Vector3.forward * warkspeed * Time.deltaTime);
+		animator.SetTrigger("walk");
 	}
 
 	void OnTriggerStay(Collider other)
@@ -30,16 +30,6 @@ public class ZombieController : MonoBehaviour
 			// LookAtplayer
 			Quaternion LookAtPlayer=Quaternion.LookRotation(other.transform.position-transform.position);
 			zombie.transform.rotation=Quaternion.Slerp(transform.rotation,LookAtPlayer,rotatespeed*Time.deltaTime);
-
-			if(zombie.transform.position.x-other.gameObject.transform.position.x < 1.0f)
-			{
-				animator.SetTrigger("Attak");
-
-				if(AnimSt.normalizedTime<1.0f)
-				{
-					animator.SetTrigger("Walk");
-				}
-			}
 		}
 	}
 }
