@@ -30,7 +30,9 @@ namespace UnityChan
 		// 旋回速度
 		public float rotateSpeed = 2.0f;
 		// ジャンプ威力
-		public float jumpPower = 3.0f; 
+		public float jumpPower = 3.0f;
+		//HP
+		public int playerHP{ get; set;}
 		// キャラクターコントローラ（カプセルコライダ）の参照
 		private CapsuleCollider col;
 		private Rigidbody rb;
@@ -50,6 +52,7 @@ namespace UnityChan
 		static int jumpState = Animator.StringToHash ("Base Layer.Jump");
 		static int restState = Animator.StringToHash ("Base Layer.Rest");
 
+		#region Start
 		// 初期化
 		void Start ()
 		{
@@ -63,9 +66,12 @@ namespace UnityChan
 			// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 			orgColHight = col.height;
 			orgVectColCenter = col.center;
+			//init HP
+			playerHP = 3;
 		}
-	
-	
+		#endregion
+
+		#region FixedUpdate
 		// 以下、メイン処理.リジッドボディと絡めるので、FixedUpdate内で処理を行う.
 		void FixedUpdate ()
 		{
@@ -177,7 +183,9 @@ namespace UnityChan
 				}
 			}
 		}
+		#endregion
 
+		#region GUI
 		//void OnGUI ()
 		//{
 		//	GUI.Box (new Rect (Screen.width - 260, 10, 250, 150), "Interaction");
@@ -188,7 +196,7 @@ namespace UnityChan
 		//	GUI.Label (new Rect (Screen.width - 245, 110, 250, 30), "Left Control : Front Camera");
 		//	GUI.Label (new Rect (Screen.width - 245, 130, 250, 30), "Alt : LookAt Camera");
 		//}
-
+		#endregion
 
 		// キャラクターのコライダーサイズのリセット関数
 		void resetCollider ()

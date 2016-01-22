@@ -2,28 +2,35 @@
 using System.Collections;
 using UnityChan;
 
-public class Damage : MonoBehaviour 
+public class DamageErea : MonoBehaviour 
 {
-	public GameObject DamageErea;
+	//damage
+	public GameObject damageErea;
 	private UnityChanControlScriptWithRgidBody unitychancontroller;
+	//unitychan HP
 	private PlayerHP lifecount;
+	//attak animation
+	private Animator attakanim;
 
 	// Use this for initialization
 	void Start () 
 	{
-		DamageErea = GetComponent<GameObject> ();
+		attakanim = GetComponentInParent<Animator> ();
+		damageErea = GetComponent<GameObject> ();
 		unitychancontroller = GameObject.Find ("unitychan_dynamic_locomotion").GetComponent<UnityChanControlScriptWithRgidBody> ();
 		lifecount = GameObject.Find ("Life").GetComponent<PlayerHP> ();
 	}
 	
-	// Update is called once per frame
-	void OnTriggerEnter (Collider player) 
+	void OnTriggerEnter(Collider other)
 	{
-		if (player.gameObject.tag == "Player") 
+		//
+		if (other.gameObject.tag == "Player") 
 		{
+			//change animation
+			attakanim.SetTrigger ("attak");
 			//Damage
 			unitychancontroller.playerHP--;
-			lifecount.UpdateLife(unitychancontroller.playerHP);
+			lifecount.UpdateLife (unitychancontroller.playerHP);
 		}
 	}
 }
