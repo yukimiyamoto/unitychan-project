@@ -33,6 +33,7 @@ namespace UnityChan
 		public float jumpPower = 3.0f;
 		//HP
 		public int playerHP = 3;
+		private int currentHP;
 		// キャラクターコントローラ（カプセルコライダ）の参照
 		private CapsuleCollider col;
 		private Rigidbody rb;
@@ -52,7 +53,8 @@ namespace UnityChan
 		static int locoState = Animator.StringToHash ("Base Layer.Locomotion");
 		static int jumpState = Animator.StringToHash ("Base Layer.Jump");
 		static int restState = Animator.StringToHash ("Base Layer.Rest");
-		static int loseState = Animator.StringToHash ("Base Layer.Lose");
+		//static int loseState = Animator.StringToHash ("Base Layer.Lose");
+		static int damageState = Animator.StringToHash ("Base Layer.Damage");
 
 		#region Start
 		// 初期化
@@ -68,6 +70,7 @@ namespace UnityChan
 			// CapsuleColliderコンポーネントのHeight、Centerの初期値を保存する
 			orgColHight = col.height;
 			orgVectColCenter = col.center;
+			currentHP = playerHP;
 		}
 		#endregion
 
@@ -75,11 +78,6 @@ namespace UnityChan
 		// 以下、メイン処理.リジッドボディと絡めるので、FixedUpdate内で処理を行う.
 		void FixedUpdate ()
 		{
-			if (playerHP <= 0) 
-			{
-				Debug.Log ("aaa");
-				anim.SetBool("Lose",false);
-			}
 
 			float h = Input.GetAxis ("Horizontal");				// 入力デバイスの水平軸をhで定義
 			float v = Input.GetAxis ("Vertical");				// 入力デバイスの垂直軸をvで定義
@@ -101,7 +99,11 @@ namespace UnityChan
 			} else if (v < -0.1) {
 				velocity *= backwardSpeed;	// 移動速度を掛ける
 			}
-		
+			//is damaged
+			if(currentHP > playerHP){
+				currentHP = playerHP;
+				anim.SetBool ("Damage", true);
+			}
 			if (Input.GetButtonDown ("Jump")) {	// スペースキーを入力したら
 
 				//アニメーションのステートがLocomotionの最中のみジャンプできる
@@ -186,6 +188,19 @@ namespace UnityChan
 				// ステートが遷移中でない場合、Rest bool値をリセットする（ループしないようにする）
 				if (!anim.IsInTransition (0)) {
 					anim.SetBool ("Rest", false);
+				}
+			}
+		//if state is damage
+		else if(currentBaseState.fullPathHash == damageState){
+				//Prevention is roop
+				anim.SetBool("Damage", false);
+			}
+		//dead
+		else if(currentBaseState.fullPathHash == damageState){
+				//HP is enpty
+				if (playerHP <= 0) 
+				{
+					anim.SetBool("Lose", true);
 				}
 			}
 		}
