@@ -24,6 +24,7 @@ public class DamageErea : MonoBehaviour
 		damageErea = GetComponent<GameObject> ();
 		unitychancontroller = GameObject.Find ("unitychan_dynamic_locomotion").GetComponent<UnityChanControlScriptWithRgidBody> ();
 		lifecount = GameObject.Find ("Life").GetComponent<PlayerHP> ();
+		lifecount.UpdateLife (unitychancontroller.playerHP);
 	}
 
 	IEnumerator attakInterval()

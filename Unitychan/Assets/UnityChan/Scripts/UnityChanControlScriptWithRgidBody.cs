@@ -21,7 +21,8 @@ namespace UnityChan
 		public bool useCurves = true;				// Mecanimでカーブ調整を使うか設定する
 		// このスイッチが入っていないとカーブは使われない
 		public float useCurvesHeight = 0.5f;		// カーブ補正の有効高さ（地面をすり抜けやすい時には大きくする）
-
+		//unrivaledLight
+		public GameObject unrivaledLight;
 		// 以下キャラクターコントローラ用パラメタ
 		// 前進速度
 		public float forwardSpeed = 7.0f;
@@ -34,6 +35,8 @@ namespace UnityChan
 		//HP
 		public int playerHP = 3;
 		private int currentHP;
+		//unrivaledtimeFlag
+		private bool Damageintervalflag = false;
 		// キャラクターコントローラ（カプセルコライダ）の参照
 		private CapsuleCollider col;
 		private Rigidbody rb;
@@ -71,6 +74,9 @@ namespace UnityChan
 			orgColHight = col.height;
 			orgVectColCenter = col.center;
 			currentHP = playerHP;
+			//The acquisition light
+			unrivaledLight = GameObject.Find ("UnrivaledLight");
+			unrivaledLight.SetActive (false);
 		}
 		#endregion
 
@@ -78,6 +84,12 @@ namespace UnityChan
 		// 以下、メイン処理.リジッドボディと絡めるので、FixedUpdate内で処理を行う.
 		void FixedUpdate ()
 		{
+			//dead
+			if(playerHP <= 0){
+				//HP is enpty
+				anim.SetBool("Lose", true);
+				Application.LoadLevel("GameOver");
+			}
 
 			float h = Input.GetAxis ("Horizontal");				// 入力デバイスの水平軸をhで定義
 			float v = Input.GetAxis ("Vertical");				// 入力デバイスの垂直軸をvで定義
@@ -100,10 +112,13 @@ namespace UnityChan
 				velocity *= backwardSpeed;	// 移動速度を掛ける
 			}
 			//is damaged
-			if(currentHP > playerHP){
+			if(currentHP > playerHP && !Damageintervalflag){
 				currentHP = playerHP;
 				anim.SetBool ("Damage", true);
+				//unrivaledtime start
+				StartCoroutine(UnrivaledTime());
 			}
+
 			if (Input.GetButtonDown ("Jump")) {	// スペースキーを入力したら
 
 				//アニメーションのステートがLocomotionの最中のみジャンプできる
@@ -195,14 +210,6 @@ namespace UnityChan
 				//Prevention is roop
 				anim.SetBool("Damage", false);
 			}
-		//dead
-		else if(currentBaseState.fullPathHash == damageState){
-				//HP is enpty
-				if (playerHP <= 0) 
-				{
-					anim.SetBool("Lose", true);
-				}
-			}
 		}
 		#endregion
 
@@ -225,6 +232,17 @@ namespace UnityChan
 			// コンポーネントのHeight、Centerの初期値を戻す
 			col.height = orgColHight;
 			col.center = orgVectColCenter;
+		}
+
+		IEnumerator UnrivaledTime()
+		{
+			Damageintervalflag = true;
+			unrivaledLight.SetActive (true);
+
+			yield return new WaitForSeconds (4.0f);
+
+			unrivaledLight.SetActive (false);
+			Damageintervalflag = false;
 		}
 	}
 }
